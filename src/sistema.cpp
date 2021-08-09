@@ -256,8 +256,6 @@ string Sistema::list_channels(int id) {
     return "Usuario nao esta conectado";
   }
 
-  //checar se usuario esta em um servidor
-
   string serverToSearch = usuariosLogados.at(id).first;
 
   if(serverToSearch == ""){
@@ -268,7 +266,6 @@ string Sistema::list_channels(int id) {
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == serverToSearch){
 
-      //cout<<it->canaisTexto[0].olharCanal()<<endl;
       it->listCanaisTexto();
 
       return "";
@@ -387,21 +384,14 @@ string Sistema::send_message(int id, const string mensagem) {
       for(int i=0; i<it->olharCanaisTextoTamanho();i++){
         if(it->accessCanalTextoNome(i) == usuariosLogados.at(id).second){
 
-          // auto t = time(nullptr);
-          // time_t now = time(0);
-          // auto tm = *localtime_s(&t);
-
           time_t rawtime;
           struct tm timeinfo;
           time(&rawtime);
           localtime_s(&timeinfo, &rawtime);
-          //timeinfo = *(localtime_s(&timeinfo, &rawtime));
 
           std::ostringstream oss;
           oss << usuarios[id].nome << put_time(&timeinfo, "<%d/%m/%Y - %H:%M>");
           auto str = oss.str();
-
-          //std::cout << usuarios[id].nome << str << std::endl;
 
           it->escreverMessagem(i, id, mensagem, str);
           return "";
