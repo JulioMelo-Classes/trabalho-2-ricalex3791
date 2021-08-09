@@ -2,6 +2,9 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 
 using namespace std;
 
@@ -77,6 +80,18 @@ string Sistema::create_server(int id, const string nome) {
       return "Servidor com esse nome já existe!";
     }
   }
+
+  map<int, pair<string, string>>::iterator it;
+  bool usuarioEstaLogado=false;
+  for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
+    if((it->first == id)){
+      usuarioEstaLogado=true;
+    }
+  }
+  if(usuarioEstaLogado==false){
+    return "Usuario nao esta conectado";
+  }
+
   Servidor newServer;
   newServer.setNome(nome);
   newServer.getNome();
@@ -103,10 +118,9 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
       it->setDescricao(descricao);
       it->getDescricao();
       return "Descricao adicionada ao servidor " + descricao; 
-    }else{
-      return "Servidor nao encontrado";
     }
   }
+  return "Servidor nao encontrado";
 }
 
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
@@ -175,48 +189,81 @@ string Sistema::remove_server(int id, const string nome) {
 string Sistema::enter_server(int id, const string nome, const string codigo) {
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
-    if((it->getNome() == nome) && (it->getCodigoConvite() == codigo)){
-      
-      it->participantesIDs.push_back(id);
-      usuariosLogados.at(id).first = nome;
-
-      cout<<"Entrou no servidor com sucesso!"<<endl;
-      break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
+    if(it->getNome() == nome){
+      if(it->getCodigoConvite() != "" && (codigo == "")){
+        return "Servidor requer codigo de convite";
+      }
+      if(it->getCodigoConvite() != codigo){
+        return "Codigo de convite incorreto";
+      }else{
+        it->addID(id);
+        usuariosLogados.at(id).first = nome;
+        return "Entrou no servidor com sucesso!";
+      }
     }
   }
-  return "enter_server NÃO IMPLEMENTADO";
+  return "Servidor nao encontrado";
 }
 
 string Sistema::leave_server(int id, const string nome) {
-  usuariosLogados.at(id).first = "";
-  return "leave_server NÃO IMPLEMENTADO";
+  map<int, pair<string, string>>::iterator it;
+  for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
+    if((it->first == id)){
+      if(it->second.first != nome){
+        return "Usuario nao esta no servidor";
+      }else{
+        it->second.first = "";
+        it->second.second = "";
+        return "Saindo do servidor " + nome;
+      }
+    }
+  }
+  return "Usuario nao encontrado";
+  //usuariosLogados.at(id).first = "";
 }
 
 string Sistema::list_participants(int id) {
   string serverToSearch = usuariosLogados.at(id).first;
+
+  if(usuariosLogados.at(id).first == ""){
+    return "Usuario nao esta em nenhum servidor";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == serverToSearch){
       
-      for(int i=0; i<it->participantesIDs.size(); i++){
-        cout<<it->participantesIDs[i]<<endl;
+      for(int i=0; i<it->checkIDSize(); i++){
+        cout<<it->checkID(i)<<endl;
       }
 
-      cout<<"Entrou no servidor com sucesso!"<<endl;
-      break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
+      return "";
     }
   }
 
-
-  return "list_participants NÃO IMPLEMENTADO";
+  return "Servidor nao encontrado";
 }
 
 string Sistema::list_channels(int id) {
+  map<int, pair<string, string>>::iterator itCheck;
+  bool usuarioEstaLogado=false;
+  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
+    if((itCheck->first == id)){
+      usuarioEstaLogado=true;
+    }
+  }
+  if(usuarioEstaLogado==false){
+    return "Usuario nao esta conectado";
+  }
+
+  //checar se usuario esta em um servidor
+
   string serverToSearch = usuariosLogados.at(id).first;
+
+  if(serverToSearch == ""){
+    return "Usuario nao esta em nenhum servidor";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == serverToSearch){
@@ -224,84 +271,145 @@ string Sistema::list_channels(int id) {
       //cout<<it->canaisTexto[0].olharCanal()<<endl;
       it->listCanaisTexto();
 
-      cout<<"Entrou no servidor com sucesso!"<<endl;
-      break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
+      return "";
     }
   }
-  return "list_channels NÃO IMPLEMENTADO";
+  return "Servidor nao encontrado";
 }
 
 string Sistema::create_channel(int id, const string nome) {
+
+  map<int, pair<string, string>>::iterator itCheck;
+  bool usuarioEstaLogado=false;
+  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
+    if((itCheck->first == id)){
+      usuarioEstaLogado=true;
+    }
+  }
+  if(usuarioEstaLogado==false){
+    return "Usuario nao esta conectado";
+  }
+
   string serverToSearch = usuariosLogados.at(id).first;
+
+  if(serverToSearch == ""){
+    return "Usuario nao esta em nenhum servidor";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == serverToSearch){
-      
-
       it->addCanalTexto(nome);
-      //it->canaisTexto[it->canaisTexto.size()].mudarCanal(nome);
-
-      cout<<"Entrou no servidor com sucesso!"<<endl;
-      break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
+      return "Canal de texto '" + nome + "' criado!";
     }
   }
 
-  return "create_channel NÃO IMPLEMENTADO";
+  return "Servidor nao encontrado";
 }
 
 string Sistema::enter_channel(int id, const string nome) {
+
+  map<int, pair<string, string>>::iterator itCheck;
+  bool usuarioEstaLogado=false;
+  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
+    if((itCheck->first == id)){
+      usuarioEstaLogado=true;
+    }
+  }
+  if(usuarioEstaLogado==false){
+    return "Usuario nao esta conectado";
+  }
+
   string serverToSearch = usuariosLogados.at(id).first;
+
+  if(serverToSearch == ""){
+    return "Usuario nao esta em nenhum servidor";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == serverToSearch){
       for(int i=0; i<it->olharCanaisTextoTamanho();i++){
         if(it->accessCanalTextoNome(i) == nome){
           usuariosLogados.at(id).second = nome;
-          cout<<"Entrou no canal com sucesso!"<<endl;
-        }else{
-          cout<<"NAO Entrou no CANAL com sucesso!"<<endl;
+          return "Entrou no canal '" + nome + "'";
         }
       }
-      
+      return "Canal '" + nome + "' nao existe";
       break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
     }
   }
-  return "enter_channel NÃO IMPLEMENTADO";
+
+  return "Servidor nao encontrado";
 }
 
 string Sistema::leave_channel(int id) {
+
+  map<int, pair<string, string>>::iterator itCheck;
+  bool usuarioEstaLogado=false;
+  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
+    if((itCheck->first == id)){
+      usuarioEstaLogado=true;
+    }
+  }
+  if(usuarioEstaLogado==false){
+    return "Usuario nao esta conectado";
+  }
+
   usuariosLogados.at(id).second = "";
   
-  return "leave_channel NÃO IMPLEMENTADO";
+  return "Saindo do canal";
 }
 
 string Sistema::send_message(int id, const string mensagem) {
+
+  map<int, pair<string, string>>::iterator itCheck;
+  bool usuarioEstaLogado=false;
+  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
+    if((itCheck->first == id)){
+      usuarioEstaLogado=true;
+    }
+  }
+  if(usuarioEstaLogado==false){
+    return "Usuario nao esta conectado";
+  }
+
   string serverToSearch = usuariosLogados.at(id).first;
+  if(usuariosLogados.at(id).first == ""){
+    return "Usuario nao esta em nenhum servidor";
+  }
+  if(usuariosLogados.at(id).second == ""){
+    return "Usuario nao esta em nenhum canal";
+  }
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == serverToSearch){
       for(int i=0; i<it->olharCanaisTextoTamanho();i++){
         if(it->accessCanalTextoNome(i) == usuariosLogados.at(id).second){
-          //it->canaisTexto[i].adicionarMensagem(id, mensagem);
-          it->escreverMessagem(i, id, mensagem);
-          cout<<"Enviou a mensagem com sucesso"<<endl;
-        }else{
-          cout<<"NAO enviou a mensagem com sucesso!"<<endl;
+
+          // auto t = time(nullptr);
+          // time_t now = time(0);
+          // auto tm = *localtime_s(&t);
+
+          time_t rawtime;
+          struct tm timeinfo;
+          time(&rawtime);
+          localtime_s(&timeinfo, &rawtime);
+          //timeinfo = *(localtime_s(&timeinfo, &rawtime));
+
+          std::ostringstream oss;
+          oss << usuarios[id].nome << put_time(&timeinfo, "<%d/%m/%Y - %H:%M>");
+          auto str = oss.str();
+
+          //std::cout << usuarios[id].nome << str << std::endl;
+
+          it->escreverMessagem(i, id, mensagem, str);
+          return "";
         }
       }
-      
-      break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
     }
   }
-  return "send_message NÃO IMPLEMENTADO";
+  return "Servidor nao encontrado";
 }
 
 string Sistema::list_messages(int id) {
@@ -312,18 +420,12 @@ string Sistema::list_messages(int id) {
       for(int i=0; i<it->olharCanaisTextoTamanho();i++){
         if(it->accessCanalTextoNome(i) == usuariosLogados.at(id).second){
           it->accessMessages(i);
-          cout<<"Enviou a mensagem com sucesso"<<endl;
-        }else{
-          cout<<"NAO enviou a mensagem com sucesso!"<<endl;
+          return "";
         }
       }
-      
-      break;
-    }else{
-      cout<<"descricao ERRO!"<<endl;
     }
   }
-  return "list_messages NÃO IMPLEMENTADO";
+  return "";
 }
 
 

@@ -15,18 +15,23 @@ class Servidor{
 		std::string descricao;
 		std::string codigoConvite;
 		std::vector<CanalTexto> canaisTexto;
+		std::vector<int> participantesIDs;
 		
 	public:
 		
 		
-		std::vector<int> participantesIDs;
+		
 
 		void addCanalTexto(const std::string nome);
 		void listCanaisTexto();
 		int olharCanaisTextoTamanho();
 		std::string accessCanalTextoNome(int n);
-		void escreverMessagem(int n, int id, const std::string mensagem);
+		void escreverMessagem(int n, int id, const std::string mensagem, const std::string datahora);
 		void accessMessages(int n);
+
+		void addID(int n);
+		int checkIDSize();
+		int checkID(int n);
 
 		void setUsuarioDonoId(int i);
 		int getUsuarioDonoId();

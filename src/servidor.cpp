@@ -31,13 +31,32 @@ string Servidor:: accessCanalTextoNome(int n)
 {
     return canaisTexto[n].olharCanal();
 }
-void Servidor:: escreverMessagem(int n, int id, const std::string mensagem)
+void Servidor:: escreverMessagem(int n, int id, const std::string mensagem, const std::string datahora)
 {
-    canaisTexto[n].adicionarMensagem(id, mensagem);
+    canaisTexto[n].adicionarMensagem(id, mensagem, datahora);
 }
 void Servidor:: accessMessages(int n)
 {
     canaisTexto[n].lerMensagem();
+}
+
+void Servidor:: addID(int n)
+{
+    participantesIDs.push_back(n);
+}
+
+int Servidor:: checkIDSize()
+{
+    int size=0;
+    for(int i=0; i<participantesIDs.size(); i++){
+        size++;
+    }
+    return size;
+}
+
+int Servidor:: checkID(int n)
+{
+    return participantesIDs[n];
 }
 
 void Servidor:: setUsuarioDonoId(int i)
