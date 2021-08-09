@@ -70,8 +70,6 @@ class Sistema {
 		*/
 		std::string set_server_desc(int id, const std::string nome, const std::string descricao);
 
-		std::string print();
-
 		/*! Modifica o código de convite do servidor no sistema. Retorna uma mensagem de sucesso ou
 				de erro em caso de falha.
 				@param id um id válido de um usuário logado no sistema.

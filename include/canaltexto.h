@@ -12,10 +12,10 @@ class CanalTexto{
 		std::string nome;
 		std::vector<Mensagem> mensagens;
 	public:
-		std::string mudarCanal(const std::string name);
+		void mudarCanalNome(const std::string name);
+		void adicionarMensagem(int id, const std::string conteudo);
+		void lerMensagem();
 		std::string olharCanal();
-		std::string adicionarMensagem(int id, const std::string conteudo);
-		std::string lerMensagem();
 };
 
 #endif
