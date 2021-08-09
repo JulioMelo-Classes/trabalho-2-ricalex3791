@@ -389,7 +389,7 @@ string Sistema::send_message(int id, const string mensagem) {
           time(&rawtime);
           localtime_s(&timeinfo, &rawtime);
 
-          std::ostringstream oss;
+          ostringstream oss;
           oss << usuarios[id].nome << put_time(&timeinfo, "<%d/%m/%Y - %H:%M>");
           auto str = oss.str();
 
