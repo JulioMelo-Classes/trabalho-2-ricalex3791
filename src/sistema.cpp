@@ -39,7 +39,6 @@ string Sistema::login(const string email, const string senha) {
   vector<Usuario>::iterator it;
   for ( it = usuarios.begin(); it != usuarios.end(); it++ ) {
     if((it->email == email) && (it->senha == senha)){
-      //cout<<"Logado com ID "<< it->id<<endl;
       sucessoMensagem = "Conectado como " + it->email;
       usuariosLogados.insert(pair<int, pair<string,string>>(it->id,make_pair("","")));
       cout<<usuariosLogados.size()<<endl;
@@ -81,14 +80,7 @@ string Sistema::create_server(int id, const string nome) {
     }
   }
 
-  map<int, pair<string, string>>::iterator it;
-  bool usuarioEstaLogado=false;
-  for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
-    if((it->first == id)){
-      usuarioEstaLogado=true;
-    }
-  }
-  if(usuarioEstaLogado==false){
+  if(verifyLoginStatus(id) == false){
     return "Usuario nao esta conectado";
   }
 
@@ -103,6 +95,17 @@ string Sistema::create_server(int id, const string nome) {
   return "Servidor criado";
 }
 
+bool Sistema::verifyLoginStatus(int id)
+{
+  map<int, pair<string, string>>::iterator it;
+  for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
+    if((it->first == id)){
+      return true;
+    }
+  }
+  return false;
+}
+
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
@@ -112,12 +115,16 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
     }
   }
 
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == nome){
       it->setDescricao(descricao);
       it->getDescricao();
-      return "Descricao adicionada ao servidor " + descricao; 
+      return "Descricao adicionada ao servidor " + nome; 
     }
   }
   return "Servidor nao encontrado";
@@ -130,6 +137,10 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
     if(itCheck->getUsuarioDonoId() != id){
       return "Voce nao pode alterar o codigo de convite de um servidor que nao foi criado por voce";
     }
+  }
+
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
   }
 
   vector<Servidor>::iterator it;
@@ -167,6 +178,10 @@ string Sistema::remove_server(int id, const string nome) {
     }
   }
 
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == nome){
@@ -187,6 +202,11 @@ string Sistema::remove_server(int id, const string nome) {
 }
 
 string Sistema::enter_server(int id, const string nome, const string codigo) {
+
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
+  }
+
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
     if(it->getNome() == nome){
@@ -206,6 +226,11 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
 }
 
 string Sistema::leave_server(int id, const string nome) {
+
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
+  }
+
   map<int, pair<string, string>>::iterator it;
   for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
     if((it->first == id)){
@@ -219,10 +244,14 @@ string Sistema::leave_server(int id, const string nome) {
     }
   }
   return "Usuario nao encontrado";
-  //usuariosLogados.at(id).first = "";
 }
 
 string Sistema::list_participants(int id) {
+
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
+  }
+
   string serverToSearch = usuariosLogados.at(id).first;
 
   if(usuariosLogados.at(id).first == ""){
@@ -245,14 +274,8 @@ string Sistema::list_participants(int id) {
 }
 
 string Sistema::list_channels(int id) {
-  map<int, pair<string, string>>::iterator itCheck;
-  bool usuarioEstaLogado=false;
-  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
-    if((itCheck->first == id)){
-      usuarioEstaLogado=true;
-    }
-  }
-  if(usuarioEstaLogado==false){
+
+  if(verifyLoginStatus(id) == false){
     return "Usuario nao esta conectado";
   }
 
@@ -276,14 +299,7 @@ string Sistema::list_channels(int id) {
 
 string Sistema::create_channel(int id, const string nome) {
 
-  map<int, pair<string, string>>::iterator itCheck;
-  bool usuarioEstaLogado=false;
-  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
-    if((itCheck->first == id)){
-      usuarioEstaLogado=true;
-    }
-  }
-  if(usuarioEstaLogado==false){
+  if(verifyLoginStatus(id) == false){
     return "Usuario nao esta conectado";
   }
 
@@ -306,14 +322,7 @@ string Sistema::create_channel(int id, const string nome) {
 
 string Sistema::enter_channel(int id, const string nome) {
 
-  map<int, pair<string, string>>::iterator itCheck;
-  bool usuarioEstaLogado=false;
-  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
-    if((itCheck->first == id)){
-      usuarioEstaLogado=true;
-    }
-  }
-  if(usuarioEstaLogado==false){
+  if(verifyLoginStatus(id) == false){
     return "Usuario nao esta conectado";
   }
 
@@ -342,14 +351,7 @@ string Sistema::enter_channel(int id, const string nome) {
 
 string Sistema::leave_channel(int id) {
 
-  map<int, pair<string, string>>::iterator itCheck;
-  bool usuarioEstaLogado=false;
-  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
-    if((itCheck->first == id)){
-      usuarioEstaLogado=true;
-    }
-  }
-  if(usuarioEstaLogado==false){
+  if(verifyLoginStatus(id) == false){
     return "Usuario nao esta conectado";
   }
 
@@ -360,14 +362,7 @@ string Sistema::leave_channel(int id) {
 
 string Sistema::send_message(int id, const string mensagem) {
 
-  map<int, pair<string, string>>::iterator itCheck;
-  bool usuarioEstaLogado=false;
-  for ( itCheck = usuariosLogados.begin(); itCheck != usuariosLogados.end(); itCheck++ ) {
-    if((itCheck->first == id)){
-      usuarioEstaLogado=true;
-    }
-  }
-  if(usuarioEstaLogado==false){
+  if(verifyLoginStatus(id) == false){
     return "Usuario nao esta conectado";
   }
 
@@ -403,6 +398,11 @@ string Sistema::send_message(int id, const string mensagem) {
 }
 
 string Sistema::list_messages(int id) {
+
+  if(verifyLoginStatus(id) == false){
+    return "Usuario nao esta conectado";
+  }
+
   string serverToSearch = usuariosLogados.at(id).first;
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
@@ -417,8 +417,5 @@ string Sistema::list_messages(int id) {
   }
   return "";
 }
-
-
-
 
 /* IMPLEMENTAR MÉTODOS PARA OS COMANDOS RESTANTES */

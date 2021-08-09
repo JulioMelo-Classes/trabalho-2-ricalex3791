@@ -4,13 +4,10 @@
 #include <string>
 
 class Mensagem{
-	/*
-		TODO implementação dos atributos e métodos
-	*/
 	public:
-        std::string dataHora;
-        int enviadaPor;
-		std::string conteudo;
+        std::string dataHora; //<! data e hora em que a mensagem foi escrita
+        int enviadaPor; //<! ID do usuario que escreveu a mensagem
+		std::string conteudo; //<! a mensagem
 };
 
 #endif

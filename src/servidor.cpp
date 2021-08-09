@@ -13,24 +13,29 @@ void Servidor:: addCanalTexto(const std::string nome)
     newCanal.mudarCanalNome(nome);
     canaisTexto.push_back(newCanal);
 }
+
 void Servidor:: listCanaisTexto()
 {
-    for(int i = 0;i<canaisTexto.size();i++){
+    //unsigned int k = canaisTexto.size();
+    for(unsigned int i = 0;i<canaisTexto.size();i++){
         cout<<canaisTexto[i].olharCanal()<<endl;
     }
 }
+
 int Servidor:: olharCanaisTextoTamanho()
 {
     int size=0;
-    for(int i=0; i<canaisTexto.size();i++){
+    for(unsigned int i=0; i<canaisTexto.size();i++){
         size++;
     }
     return size;
 }
+
 string Servidor:: accessCanalTextoNome(int n)
 {
     return canaisTexto[n].olharCanal();
 }
+
 void Servidor:: escreverMessagem(int n, int id, const std::string mensagem, const std::string datahora)
 {
     canaisTexto[n].adicionarMensagem(id, mensagem, datahora);
@@ -48,7 +53,7 @@ void Servidor:: addID(int n)
 int Servidor:: checkIDSize()
 {
     int size=0;
-    for(int i=0; i<participantesIDs.size(); i++){
+    for(unsigned int i=0; i<participantesIDs.size(); i++){
         size++;
     }
     return size;

@@ -25,7 +25,7 @@ void CanalTexto:: adicionarMensagem(int id, const std::string conteudo, const st
 }
 void CanalTexto:: lerMensagem()
 {
-  for(int i=0; i<mensagens.size();i++){
+  for(unsigned int i=0; i<mensagens.size();i++){
     cout<<mensagens[i].dataHora<<":"<<mensagens[i].conteudo<<endl;
   }
 }
