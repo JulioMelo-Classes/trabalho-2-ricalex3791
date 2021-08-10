@@ -1,3 +1,0 @@
-C:/Users/rical/Documents/GitHub/trabalho-2-ricalex3791/build/CMakeFiles/concordo.dir
-C:/Users/rical/Documents/GitHub/trabalho-2-ricalex3791/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/rical/Documents/GitHub/trabalho-2-ricalex3791/build/CMakeFiles/ZERO_CHECK.dir
