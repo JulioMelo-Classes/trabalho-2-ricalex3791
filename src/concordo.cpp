@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
 
   
   if(argc == 1){
-    cout<<argc<<endl;
     // o executor recebe o cin e o cout. Ele os utilizará para ler as linhas
     // de comando, executar o método correto em "sistema" e exibir as mensagens
     executor.iniciar(cin, cout);
