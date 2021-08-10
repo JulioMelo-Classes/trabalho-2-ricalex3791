@@ -1,0 +1,15 @@
+create-user new.user@email 123
+create-user new.user@email 123 New
+create-user outro.user@email 234 Outro
+login new.user@email 234
+login new.user@email 123
+login outro.user@email 234
+disconnect 3
+create-server 0 novo-server
+create-server 1 novo-server
+set-server-desc 1 novo-server esse server eh meu
+set-server-invite-code 1 novo-server novasenha
+remove-server 1 novo-server
+disconnect 1
+enter-server 1 novo-server
+quit

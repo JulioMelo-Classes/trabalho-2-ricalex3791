@@ -22,6 +22,9 @@ string Sistema::create_user (const string email, const string senha, const strin
       return "Email já registrado!";
     }
   }
+  if( email == "" || senha == "" || nome == ""){
+    return "Input invalido";
+  }
 
   Usuario newUser;
   newUser.email = email;
@@ -41,13 +44,12 @@ string Sistema::login(const string email, const string senha) {
     if((it->email == email) && (it->senha == senha)){
       sucessoMensagem = "Conectado como " + it->email;
       usuariosLogados.insert(pair<int, pair<string,string>>(it->id,make_pair("","")));
-      cout<<usuariosLogados.size()<<endl;
       sucessoLogin=true;
       break;
     }
   }
   if(sucessoLogin==false){
-    return "Senha ou e-mail inválidos!";
+    return "Senha ou e-mail invalidos!";
   }else{
     return "Conectado como " + it->email;
   }
@@ -56,7 +58,6 @@ string Sistema::login(const string email, const string senha) {
 
 string Sistema::disconnect(int id) {
   map<int, pair<string, string>>::iterator it;
-  cout<<usuariosLogados.size()<<endl;
   for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
     if((it->first == id)){
       vector<Usuario>::iterator it2;
@@ -110,7 +111,7 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
   for ( itCheck = servidores.begin(); itCheck != servidores.end(); itCheck++ ) {
-    if(itCheck->getUsuarioDonoId() != id){
+    if((itCheck->getNome() == nome) && (itCheck->getUsuarioDonoId() != id)){
       return "Voce nao pode alterar a descricao de um servidor que nao foi criado por voce";
     }
   }
@@ -134,7 +135,7 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
   for ( itCheck = servidores.begin(); itCheck != servidores.end(); itCheck++ ) {
-    if(itCheck->getUsuarioDonoId() != id){
+    if((itCheck->getNome() == nome) && (itCheck->getUsuarioDonoId() != id)){
       return "Voce nao pode alterar o codigo de convite de um servidor que nao foi criado por voce";
     }
   }
@@ -149,11 +150,11 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
       if(codigo == ""){
         it->setCodigoConvite(codigo);
         it->getCodigoConvite();
-        return "Codigo de convite do servidor " + nome + " removido!";
+        return "Codigo de convite do servidor '" + nome + "' removido!";
       }else{
         it->setCodigoConvite(codigo);
         it->getCodigoConvite();
-        return "Codigo de convite do servidor " + nome + " modificado!";
+        return "Codigo de convite do servidor '" + nome + "' modificado!";
       }
       
     }
@@ -173,7 +174,7 @@ string Sistema::remove_server(int id, const string nome) {
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
   for ( itCheck = servidores.begin(); itCheck != servidores.end(); itCheck++ ) {
-    if(itCheck->getUsuarioDonoId() != id){
+    if((itCheck->getNome() == nome) && (itCheck->getUsuarioDonoId() != id)){
       return "Voce nao pode remover um servidor que nao foi criado por voce";
     }
   }
@@ -195,7 +196,7 @@ string Sistema::remove_server(int id, const string nome) {
       }
 
       servidores.erase(it);
-      return "Servidor " + nome + "removido!";
+      return "Servidor '" + nome + "' removido!";
     }
   }
   return "Servidor nao encontrado";
@@ -389,7 +390,7 @@ string Sistema::send_message(int id, const string mensagem) {
           auto str = oss.str();
 
           it->escreverMessagem(i, id, mensagem, str);
-          return "";
+          return "Mensagem enviada por " + usuarios[id].nome;
         }
       }
     }
@@ -415,7 +416,7 @@ string Sistema::list_messages(int id) {
       }
     }
   }
-  return "";
+  return "Servidor nao encontrado";
 }
 
 /* IMPLEMENTAR MÉTODOS PARA OS COMANDOS RESTANTES */

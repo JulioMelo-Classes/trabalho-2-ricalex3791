@@ -1,0 +1,34 @@
+create-user ric.alex55@yahoo.com senha Ricardo
+create-user joazinho.couves@ufrn.br password Joao 
+create-user maria.joaquina@imd.br 123 Maria 
+login ric.alex55@yahoo.com senha
+login joazinho.couves@ufrn.br password
+login maria.joaquina@imd.br 123
+disconnect 1 
+create-server 0 LP1
+create-server 2 Jogos
+list-servers 0
+remove-server 2 Jogos
+set-server-desc 0 LP1 Um servidor para estudar LP1
+set-server-invite-code 0 LP1 imd
+disconnect 0
+enter-server 2 LP1 imd
+login joazinho.couves@ufrn.br password
+enter-server 1 LP1 imd
+login ric.alex55@yahoo.com senha
+enter-server 0 LP1 imd
+create-channel 0 geral
+create-channel 0 discussoes-trabalho-2
+enter-channel 0 geral
+enter-channel 1 geral
+enter-channel 2 geral
+send-message 0 Opa, finalmente o servidor ta pronto
+send-message 2 Verdade, e bem a tempo tambem
+leave-server 1 LP1 
+send-message 0 ue...
+list-participants 0
+list-channels 0
+send-message 2 bem, ate mais
+leave-channel 2
+list-messages 0
+quit

@@ -22,22 +22,22 @@ set-server-invite-code 0 servidor-legal
 set-server-invite-code 0 servidor-inexistente 123
 set-server-invite-code 0 servidor-inexistente
 disconnect 0
-list-servers 0
+list-servers
 login isaacfranco@imd.ufrn.br senhalegal
-list-servers 0
+list-servers
 remove-server 0 servidor-inexistente
 remove-server 0 servidor-legal
-list-servers 0
+list-servers
 disconnect 0
 remove-server 0 servidor-ruim
 login isaacfranco@imd.ufrn.br senhalegal
 remove-server 0 servidor-ruim
 create-server 0 servidor-bacana
 create-server 0 servidor-fuderoso
-list-servers 0
+list-servers
 enter-server 0 servidor-bacana
 leave-server 0 servidor-bacana
-list-servers 0
+list-servers
 login isaacfranco@imd.ufrn.br senhalegal
 remove-server 0 servidor-bacana
 enter-server 0 servidor-bacana
@@ -50,5 +50,19 @@ enter-server 2 servidor-sinistro
 login isaacfranco@imd.ufrn.br senhalegal
 enter-server 0 servidor-sinistro
 list-participants 0
+create-channel 0 canal-sinistro
+enter-channel 0 canal-inexistente
+enter-channel 0 canal-sinistro
+send-message 0 Wow, que canal sinistro
+send-message 1 verdade
+send-message 0 Ele esqueceu de entrar no canal
+enter-channel 1 canal-sinistro
+send-message 1 agora sim
+create-channel 2 canal-solitario
+enter-channel 2 canal-solitario
+send-message 2 estou sozinho...
+list-channels 0
+list-messages 2
+list-messages 0
 quit
 create-user naodeveprocessar@imd.ufrn.br naodevechegaraqui Não deve chegar aqui

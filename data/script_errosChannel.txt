@@ -1,0 +1,11 @@
+create-user new.user@email 123 New
+create-user outro.user@email 234 Outro
+login new.user@email 123
+login outro.user@email 234
+create-server 0 novo-server
+create-channel 0 novo-canal
+enter-server 0 novo-server
+create-channel 0 novo-canal
+enter-channel 0 canal-inexistente
+enter-channel 0 novo-canal
+quit
