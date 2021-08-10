@@ -1,9 +1,9 @@
 # trabalho-2-ricalex3791
 
-## Para compilar com CMake no Windows
+## Para compilar com CMake no Windows PowerShell
 
-O arquivo CMakeList.txt já está configurado, então pode seguir os seguintes passos para compilar o projeto pelo prompt de comando.
-Após abrir o CMD e ir para o diretório onde os arquivos estão, execute os comandos
+O arquivo CMakeList.txt já está configurado, então pode seguir os seguintes passos para compilar o projeto pelo powershell.
+Após abrir o PowerShell e ir para o diretório onde os arquivos estão, execute os comandos
 
 ```console
 mkdir build
