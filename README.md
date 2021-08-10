@@ -28,11 +28,14 @@ No entanto, se você quiser utilizar um arquivo de texto com uma lista de comand
 ./build/Debug/concordo.exe ./data/[arquivo de texto]
 ```
 ... substituindo o [arquivo de texto] pelo nome de alguns dos arquivos na pasta /data.
+
+```
 O aquivo script_correto.txt possui uma lista de comandos sem nenhum erro, assim tudo será executado sem o programa impedir nenhuma ação.
 O arquivo script_erros.txt comete vários erros, mas continua tentando até o fim.
 O arquivo script_errosServer comete vários erros relacionados aos servidores.
 O arquivo script_errosChannel comete vários erros relacionados aos métodos de Canais de Texto.
 O arquivo script_errosMessage comete vários erros relacionados ao envio de mensagens.
+```
 
 ## Limitações
 Na função que mostra os usuarios participantes em um servidor, este programa mostra apenas o ID dos usuarios, e não o seu nome.
