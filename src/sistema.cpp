@@ -387,7 +387,7 @@ string Sistema::send_message(int id, const string mensagem) {
 
           ostringstream oss;
           oss << usuarios[id].nome << put_time(&timeinfo, "<%d/%m/%Y - %H:%M>");
-          auto str = oss.str();
+          string str = oss.str();
 
           it->escreverMessagem(i, id, mensagem, str);
           return "Mensagem enviada por " + usuarios[id].nome;
