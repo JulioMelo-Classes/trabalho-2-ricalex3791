@@ -1,4 +1,5 @@
-# trabalho-2-ricalex3791
+# Trabalho 2 - Concordo
+Repositório contendo as especificações do Trabalho 2 da disciplina de LP1
 
 ## Para compilar com CMake no Windows PowerShell
 
@@ -16,7 +17,7 @@ Isso irá criar uma pasta **Debug** e criar um executavel **"concordo.exe"** den
 
 ## Executando o programa e utilizando os testes
 
-Ainda no prompt de comando, execute um "cd .." para voltar para o diretório padrão do projeto. Daqui você pode executar os seguintes comandos para rodar o sistema e digitar os inputs manualmente.
+Ainda no PowerShell, execute um "cd .." para voltar para o diretório padrão do projeto. Daqui você pode executar os seguintes comandos para rodar o sistema e digitar os inputs manualmente.
 ```console
 ./build/Debug/concordo.exe
 ```
