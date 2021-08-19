@@ -2,7 +2,9 @@
 #define MENSAGEM_H
 
 #include <string>
-
+/*
+Cp2 ok
+*/
 class Mensagem{
 	public:
         std::string dataHora; //<! data e hora em que a mensagem foi escrita

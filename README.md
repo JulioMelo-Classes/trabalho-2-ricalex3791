@@ -16,7 +16,7 @@ cmake --build .
 Isso irá criar uma pasta **Debug** e criar um executavel **"concordo.exe"** dentro dela.
 
 ## Executando o programa e utilizando os testes
-
+<!--Vou considerar a parte de testes 100%-->
 Ainda no PowerShell, execute um "cd .." para voltar para o diretório padrão do projeto. Daqui você pode executar os seguintes comandos para rodar o sistema e digitar os inputs manualmente.
 ```console
 ./build/Debug/concordo.exe

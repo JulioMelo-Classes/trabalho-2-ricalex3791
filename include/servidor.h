@@ -5,6 +5,7 @@
 #include <iostream>
 #include "canaltexto.h"
 
+/*Cp2 e Cp1 ok*/
 class Servidor{
 	/*
 		TODO implementação dos atributos e métodos

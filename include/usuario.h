@@ -3,6 +3,9 @@
 
 #include <string>
 
+/*
+Cp1 ok
+*/
 class Usuario{
 	/*
 		TODO implementação dos atributos e métodos

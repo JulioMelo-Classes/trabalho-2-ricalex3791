@@ -4,6 +4,9 @@
 #include "mensagem.h"
 #include <vector>
 
+/*
+Cp2 ok
+*/
 class CanalTexto{
 	/*
 		TODO implementação dos atributos e métodos

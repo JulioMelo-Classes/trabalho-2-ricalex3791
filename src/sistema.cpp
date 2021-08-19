@@ -13,6 +13,9 @@ string Sistema::quit() {
   return "Saindo do concordo";
 }
 
+/*
+A1.1 ok
+*/
 string Sistema::create_user (const string email, const string senha, const string nome) {
 
   //Tratamento de erros
@@ -36,6 +39,9 @@ string Sistema::create_user (const string email, const string senha, const strin
   return "Usuario criado!";
 }
 
+/*
+A1.2 ok
+*/
 string Sistema::login(const string email, const string senha) {
   bool sucessoLogin=false;
   string sucessoMensagem;
@@ -56,9 +62,13 @@ string Sistema::login(const string email, const string senha) {
   
 }
 
+/*
+A2.1 ok
+*/
 string Sistema::disconnect(int id) {
-  map<int, pair<string, string>>::iterator it;
-  for ( it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) {
+  //map<int, pair<string, string>>::iterator it; //aqui vc pode usar auto!
+
+  for (auto it = usuariosLogados.begin(); it != usuariosLogados.end(); it++ ) { //fica melhor assim do que declarar o iterator!
     if((it->first == id)){
       vector<Usuario>::iterator it2;
       for ( it2 = usuarios.begin(); it2 != usuarios.end(); it2++ ) {
@@ -72,6 +82,9 @@ string Sistema::disconnect(int id) {
   return "Usuario nao esta conectado";
 }
 
+/*
+A2.2 ok
+*/
 string Sistema::create_server(int id, const string nome) {
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
@@ -107,6 +120,9 @@ bool Sistema::verifyLoginStatus(int id)
   return false;
 }
 
+/*
+A2.3 ok
+*/
 string Sistema::set_server_desc(int id, const string nome, const string descricao) {
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
@@ -131,6 +147,9 @@ string Sistema::set_server_desc(int id, const string nome, const string descrica
   return "Servidor nao encontrado";
 }
 
+/*
+A2.4 ok
+*/
 string Sistema::set_server_invite_code(int id, const string nome, const string codigo) {
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
@@ -162,6 +181,9 @@ string Sistema::set_server_invite_code(int id, const string nome, const string c
   return "Servidor nao encontrado";
 }
 
+/*
+A2.5 ok!
+*/
 string Sistema::list_servers(int id) {
   vector<Servidor>::iterator it;
   for(it = servidores.begin(); it != servidores.end(); it++){
@@ -170,6 +192,9 @@ string Sistema::list_servers(int id) {
   return "";
 }
 
+/*
+A2.6 ok
+*/
 string Sistema::remove_server(int id, const string nome) {
   //Tratamento de erros
   vector<Servidor>::iterator itCheck;
@@ -202,6 +227,12 @@ string Sistema::remove_server(int id, const string nome) {
   return "Servidor nao encontrado";
 }
 
+
+/*
+A2.7 0,6
+- Quando um usuário chama enter-server duas vezes ele acaba ficando duplicado no servidor! 20% a menos
+- Quando o dono do servidor tenta entrar nele, não é necessário senha! 20% a menos
+*/
 string Sistema::enter_server(int id, const string nome, const string codigo) {
 
   if(verifyLoginStatus(id) == false){
@@ -226,6 +257,11 @@ string Sistema::enter_server(int id, const string nome, const string codigo) {
   return "Servidor nao encontrado";
 }
 
+/*
+A2.8 0,8
+- Quando um usuário sai de um servidor, além de atualizar a tabela de usuários logados (se for o servidor que está sendo visualizado) o
+usuário deve ser removido da lista de participantes! -20%
+*/
 string Sistema::leave_server(int id, const string nome) {
 
   if(verifyLoginStatus(id) == false){
@@ -247,6 +283,10 @@ string Sistema::leave_server(int id, const string nome) {
   return "Usuario nao encontrado";
 }
 
+/*
+A2.9 0,5
+- Vou considerar 50% uma vez que os nomes não são exibidos!
+*/
 string Sistema::list_participants(int id) {
 
   if(verifyLoginStatus(id) == false){
@@ -274,6 +314,10 @@ string Sistema::list_participants(int id) {
   return "Servidor nao encontrado";
 }
 
+/*
+B1.1 0,9
+- Quando um servidor não tem canais, nada é informado! -10%
+*/
 string Sistema::list_channels(int id) {
 
   if(verifyLoginStatus(id) == false){
@@ -298,6 +342,10 @@ string Sistema::list_channels(int id) {
   return "Servidor nao encontrado";
 }
 
+/*
+B1.2 0,8
+- Quando um a função é chamada com um canal com o mesmo nome ele acaba ficando duplicado na lista de canais. -20%
+*/
 string Sistema::create_channel(int id, const string nome) {
 
   if(verifyLoginStatus(id) == false){
@@ -321,6 +369,9 @@ string Sistema::create_channel(int id, const string nome) {
   return "Servidor nao encontrado";
 }
 
+/*
+B1.3 ok
+*/
 string Sistema::enter_channel(int id, const string nome) {
 
   if(verifyLoginStatus(id) == false){
@@ -350,6 +401,9 @@ string Sistema::enter_channel(int id, const string nome) {
   return "Servidor nao encontrado";
 }
 
+/*
+B1.4 ok
+*/
 string Sistema::leave_channel(int id) {
 
   if(verifyLoginStatus(id) == false){
@@ -361,6 +415,9 @@ string Sistema::leave_channel(int id) {
   return "Saindo do canal";
 }
 
+/*
+B2.1 ok
+*/
 string Sistema::send_message(int id, const string mensagem) {
 
   if(verifyLoginStatus(id) == false){
@@ -380,13 +437,24 @@ string Sistema::send_message(int id, const string mensagem) {
       for(int i=0; i<it->olharCanaisTextoTamanho();i++){
         if(it->accessCanalTextoNome(i) == usuariosLogados.at(id).second){
 
+          /*
           time_t rawtime;
           struct tm timeinfo;
           time(&rawtime);
-          localtime_s(&timeinfo, &rawtime);
+          ::localtime_s(&timeinfo, &rawtime);
+
+          */
+          //coloquei uma versão mais c++ pra evitar problemas de portabilidade de localtime_s
+          time_t dataHora;
+          struct tm * timeinfo;
+          char buffer[80];
+          time (&dataHora);
+          timeinfo = localtime(&dataHora);
+          strftime(buffer, 80, "<%d/%m/%Y - %H:%M>", timeinfo);
+          string dataFormatada(buffer);
 
           ostringstream oss;
-          oss << usuarios[id].nome << put_time(&timeinfo, "<%d/%m/%Y - %H:%M>");
+          oss << usuarios[id].nome << " " << dataFormatada;
           string str = oss.str();
 
           it->escreverMessagem(i, id, mensagem, str);
@@ -398,6 +466,10 @@ string Sistema::send_message(int id, const string mensagem) {
   return "Servidor nao encontrado";
 }
 
+/*
+B2.2 0,9
+-Quando um canal está vazio nada é exibido! -10%
+*/
 string Sistema::list_messages(int id) {
 
   if(verifyLoginStatus(id) == false){

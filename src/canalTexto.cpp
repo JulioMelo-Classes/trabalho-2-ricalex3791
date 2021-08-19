@@ -1,4 +1,4 @@
-#include "canalTexto.h"
+#include "canaltexto.h" //tava errado!
 #include <istream>
 #include <ostream>
 #include <iostream>
